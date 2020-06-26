@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../../router";
 
 const state = {
   images: [],
@@ -31,7 +32,28 @@ const actions = {
         console.log(err);
       });
   },
-  uploadImages() {},
+  uploadImages({ rootState }, event) {
+    const fullUrl = `https://api.imgur.com/3/image`;
+    const config = {
+      headers: { Authorization: `Bearer ${rootState.auth.token}` },
+    };
+    const images = event.target.files;
+
+    const promises = [];
+
+    images.forEach((image) => {
+      const formData = new FormData();
+      formData.append("image", image);
+      const promise = axios.post(fullUrl, formData, config);
+      promises.push(promise);
+    });
+
+    Promise.all(promises)
+      .then(() => {
+        router.push({ name: "ImageList" });
+      })
+      .catch((err) => console.error(err));
+  },
 };
 
 export default {

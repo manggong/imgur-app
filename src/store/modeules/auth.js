@@ -21,6 +21,7 @@ const actions = {
     //Token 값 null로 바꾸기
     commit("setToken", null);
     cookies.remove("imgur_token");
+    location.pathname = "/";
   },
   login() {
     const ROOT_URL = `https://api.imgur.com`;
@@ -46,18 +47,3 @@ export default {
   mutations,
   actions,
 };
-
-// `http://localhost:8081/oauth2/callback
-// #
-// access_token=68b7acd5cce0d7b4b916a3db9d7c76be629ccad4
-// &
-// expires_in=315360000
-// &
-// token_type=bearer
-// &
-// refresh_token=6b96932f25d41f76225c9fc3df21ebfbb83e6beb
-// &
-// account_username=manggong95
-// &
-// account_id=133451359
-// `

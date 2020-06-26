@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store";
 
 import AuthHandler from "../views/AuthHandler.vue";
 import ImageList from "../views/ImageList.vue";
@@ -29,6 +30,21 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  //로그인 안하고 접근 불가 페이지로 가려고 한다면
+  const authRequiredPages = ["UploadForm"];
+  const authRequired = authRequiredPages.includes(to.name);
+  const { isLoggedIn } = store.getters;
+
+  if (authRequired && !isLoggedIn) {
+    //인증해야 하는데, 로그인 안 했을 때
+    next("/");
+  } else {
+    // 인증해야하는데, 로그인 했을 때
+    next();
+  }
 });
 
 export default router;
